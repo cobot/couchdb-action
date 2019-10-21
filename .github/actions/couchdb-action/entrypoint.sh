@@ -6,3 +6,5 @@ echo "Started Docker..."
 echo "Waiting for CouchDB..."
 sleep 10
 echo "done."
+echo "Checking CouchDB:"
+curl -i http://127.0.0.1:5984/
