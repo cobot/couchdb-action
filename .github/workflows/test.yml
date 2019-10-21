@@ -18,4 +18,4 @@ jobs:
     - name: wait for couchdb to come up
       run: sleep 10
     - name: Run test
-      run: curl -f http://couchdb:5984/_users
+      run: curl -f http://127.0.0.1:5984/_users
