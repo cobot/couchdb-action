@@ -15,7 +15,5 @@ jobs:
       uses: ./.github/actions/couchdb-action
       with:
         couchdb version: '2.3.1'
-    - name: wait for couchdb to come up
-      run: sleep 10
     - name: Run test
-      run: curl -f http://127.0.0.1:5984/
+      run: curl -i -f http://127.0.0.1:5984/
