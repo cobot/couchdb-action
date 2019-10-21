@@ -7,6 +7,7 @@ echo "Waiting for CouchDB..."
 sleep 20
 echo "done."
 docker ps
-docker top lucid_mclean
+export NAME=`docker ps --format "{{.Names}}" --last 1`
+docker top $NAME
 echo "Checking CouchDB:"
 curl -i http://localhost:5984/
