@@ -7,12 +7,10 @@ branding:
 inputs:
   # See https://hub.docker.com/_/couchdb for supported versions
   # and further details on input environment variables
-  couchdb-version:
-    description: 'Version of CouchDB to use'
+  couchdb version:
+    description: 'Version of CouchDB to use.'
     required: false
     default: 'latest'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{inputs/couchdb-version}}
