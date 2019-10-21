@@ -7,5 +7,6 @@ echo "Waiting for CouchDB..."
 sleep 20
 echo "done."
 docker ps
+docker top lucid_mclean
 echo "Checking CouchDB:"
 curl -i http://localhost:5984/
