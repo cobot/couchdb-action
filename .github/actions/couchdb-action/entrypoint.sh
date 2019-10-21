@@ -6,5 +6,6 @@ echo "Started Docker..."
 echo "Waiting for CouchDB..."
 sleep 10
 echo "done."
+ps ax|grep couch
 echo "Checking CouchDB:"
-curl -i http://couchdb:5984/
+curl -i http://localhost:5984/
