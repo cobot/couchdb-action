@@ -16,4 +16,4 @@ jobs:
       with:
         couchdb version: '2.3.1'
     - name: Run test
-      run: curl -f http://couchdb:5984/_users
+      run: sleep 10 && curl -f http://couchdb:5984/_users
