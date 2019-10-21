@@ -1,0 +1,18 @@
+name: 'Setup CouchDB'
+description: 'Set up a CouchDB database as a single node.'
+author: 'Alexander Lang'
+branding:
+  icon: 'database'
+  color: 'red'
+inputs:
+  # See https://hub.docker.com/_/couchdb for supported versions
+  # and further details on input environment variables
+  couchdb-version:
+    description: 'Version of CouchDB to use'
+    required: false
+    default: 'latest'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{inputs/couchdb-version}}

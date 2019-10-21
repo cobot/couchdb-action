@@ -1,0 +1,19 @@
+name: Test
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up CouchDB
+      uses: ./.github/actions/couchdb-action
+      with:
+        couchdb version: '2.3.1'
+    - name: Run test
+      run: curl -f http://localhost:5984/_users
