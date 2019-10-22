@@ -18,5 +18,5 @@ jobs:
         couchdb version: '2.3.1'
     - name: Run test
       run: |
-        curl -i -f http://${{steps.couchdb.outputs.ip}}:5984/
-        curl -i -f http://${{steps.couchdb.outputs.ip}}:5984/_users
+        curl -sS -f http://${{steps.couchdb.outputs.ip}}:5984/
+        curl -sS -f http://${{steps.couchdb.outputs.ip}}:5984/_users

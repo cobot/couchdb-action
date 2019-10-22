@@ -9,7 +9,7 @@ hostip=$(ip route show | awk '/default/ {print $3}')
 wait_for_couchdb() {
   while ! curl -f http://$hostip:5984/ &> /dev/null
   do
-    echo -n "."
+    echo "."
     sleep 1
   done
 }
@@ -19,8 +19,8 @@ wait_for_couchdb
 export NAME=`docker ps --format "{{.Names}}" --last 1`
 
 # Set up system databases
-docker exec $NAME curl -sS 'http://127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}'
-docker exec $NAME curl -sS 'http://127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}'
-docker exec $NAME curl -sS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}'
+docker exec $NAME curl -sS 'http://127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
+docker exec $NAME curl -sS 'http://127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
+docker exec $NAME curl -sS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
 
 echo ::set-output name=ip::$hostip
