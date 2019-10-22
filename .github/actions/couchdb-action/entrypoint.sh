@@ -7,7 +7,8 @@ echo "Waiting for CouchDB..."
 hostip=$(ip route show | awk '/default/ {print $3}')
 
 wait_for_couchdb() {
-  while ! curl -f http://$hostip:5984/ do
+  while ! curl -f http://$hostip:5984/
+  do
     echo "."
     sleep 1
   done
