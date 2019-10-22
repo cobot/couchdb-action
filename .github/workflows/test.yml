@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Set up CouchDB
       id: couchdb
-      uses: "."
+      uses: "cobot/couchdb-action@master"
       with:
         couchdb version: '2.3.1'
     - name: Run test
