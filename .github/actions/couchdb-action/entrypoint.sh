@@ -16,4 +16,4 @@ docker logs $NAME
 echo "DOCKER EXEC"
 docker exec $NAME curl -i http://127.0.0.1:5984/
 echo "Checking CouchDB:"
-curl -i http://127.0.0.1:5984/
+curl -i http://couchdb:5984/
