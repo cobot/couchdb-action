@@ -2,12 +2,17 @@
 
 echo "Starting Docker..."
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
-echo "Waiting for CouchDB..."
-sleep 20
 
-echo "Checking CouchDB is running:"
+echo "Waiting for CouchDB..."
 hostip=$(ip route show | awk '/default/ {print $3}')
-curl -vi http://$hostip:5984/
+
+wait_for_couchdb() {
+  while ! curl -f http://$hostip:5984/ do
+    echo "."
+    sleep 1
+  done
+}
+wait_for_couchdb
 
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
