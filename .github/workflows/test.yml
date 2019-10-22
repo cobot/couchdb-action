@@ -16,4 +16,4 @@ jobs:
       with:
         couchdb version: '2.3.1'
     - name: Run test
-      run: curl -i -f http://`ip route show | awk '/default/ {print $3}'`:5984/
+      run: curl -i -f http://172.17.0.1:5984/
