@@ -11,6 +11,9 @@ inputs:
     description: 'Version of CouchDB to use.'
     required: false
     default: 'latest'
+outputs:
+  ip:
+    description: IP address of CouchDB
 runs:
   using: 'docker'
   image: 'Dockerfile'

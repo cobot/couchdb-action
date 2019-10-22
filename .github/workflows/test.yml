@@ -12,8 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set up CouchDB
+      id: couchdb
       uses: ./.github/actions/couchdb-action
       with:
         couchdb version: '2.3.1'
     - name: Run test
-      run: curl -i -f http://172.17.0.1:5984/
+      run: curl -i -f http://${{steps.couchdb.outputs.ip}}:5984/
