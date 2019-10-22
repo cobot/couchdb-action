@@ -16,4 +16,5 @@ docker logs $NAME
 echo "DOCKER EXEC"
 docker exec $NAME curl -i http://127.0.0.1:5984/
 echo "Checking CouchDB:"
-curl -i http://couchdb:5984/
+hostip=$(ip route show | awk '/default/ {print $3}')
+curl -vi http://$hostip:5984/
