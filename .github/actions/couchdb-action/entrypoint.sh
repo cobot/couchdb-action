@@ -3,7 +3,8 @@
 echo "Starting Docker..."
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
 echo "Waiting for CouchDB..."
-sleep 10
+sleep 20
+
 echo "Checking CouchDB is running:"
 hostip=$(ip route show | awk '/default/ {print $3}')
 curl -vi http://$hostip:5984/
