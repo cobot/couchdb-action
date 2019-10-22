@@ -9,7 +9,7 @@ hostip=$(ip route show | awk '/default/ {print $3}')
 wait_for_couchdb() {
   while ! curl -f http://$hostip:5984/ &> /dev/null
   do
-    echo "."
+    echo -n "."
     sleep 1
   done
 }
