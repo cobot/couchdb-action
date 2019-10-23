@@ -20,6 +20,11 @@ steps:
 
 ```
 
+# Contributions
+
+- [Cobot](https://www.cobot.me)
+- [CouchDB @ Neighbourhoodie Software](https://neighbourhood.ie/couchdb-support/)
+
 # License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
