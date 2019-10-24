@@ -10,10 +10,10 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@erlang-query-server # XXX
+    - uses: actions/checkout@v1
     - name: Set up CouchDB
       id: couchdb
-      uses: "cobot/couchdb-action@master"
+      uses: cobot/couchdb-action@erlang-query-server # XXX
       with:
         couchdb version: '2.3.1'
         erlang query server: true
