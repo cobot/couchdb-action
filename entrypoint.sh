@@ -25,6 +25,7 @@ docker exec $NAME curl -sS 'http://127.0.0.1:5984/_global_changes' -X PUT -H 'Co
 docker exec $NAME curl -sS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
 
 # Enable Erlang query server
+env
 echo "Enabling Erlang query server..."
 docker exec $NAME echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /etc/couchdb/default.d/15-erlang-query-server.ini
 docker exec $NAME service couchdb restart
