@@ -28,12 +28,12 @@ docker exec $NAME curl -sS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Conten
 if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
 then
   echo "Enabling Erlang query server..."
-  docker exec $NAME 'ls -l /opt/couchdb'
-  docker exec $NAME 'ls -l /opt/couchdb/etc'
-  docker exec $NAME 'touch /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
-  docker exec $NAME 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
-  docker exec $NAME service couchdb restart
-  wait_for_couchdb
+  docker exec $NAME 'ls -l /etc/couchdb'
+  docker exec $NAME 'ls -l /etc/couchdb/etc'
+  # docker exec $NAME 'touch /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
+  # docker exec $NAME 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
+  # docker exec $NAME service couchdb restart
+  # wait_for_couchdb
 fi
 
 echo ::set-output name=ip::$hostip
