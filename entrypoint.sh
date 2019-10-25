@@ -3,6 +3,15 @@
 echo "Starting Docker..."
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
 
+# Enable Erlang query server
+if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
+then
+  echo "Enabling Erlang query server..."
+  docker exec $NAME mkdir -p /opt/couchdb/etc/default.d
+  docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
+  # docker exec $NAME service couchdb restart
+fi
+
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
   hostip=$(ip route show | awk '/default/ {print $3}')
@@ -23,15 +32,5 @@ echo "Setting up CouchDB system databases..."
 docker exec $NAME curl -sS 'http://127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
 docker exec $NAME curl -sS 'http://127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
 docker exec $NAME curl -sS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
-
-# Enable Erlang query server
-if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
-then
-  echo "Enabling Erlang query server..."
-  docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
-  docker exec $NAME sh -c 'cat /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
-  docker exec $NAME service couchdb restart
-  wait_for_couchdb
-fi
 
 echo ::set-output name=ip::$hostip
