@@ -3,12 +3,15 @@
 echo "Starting Docker..."
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
 
+# CouchDB container name
+export NAME=`docker ps --format "{{.Names}}" --last 1`
+
 # Enable Erlang query server
 if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
 then
   echo "Enabling Erlang query server..."
-  docker exec $NAME mkdir -p /opt/couchdb/etc/default.d
-  docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
+  docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
+  docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/15-erlang-query-server.ini'
   # docker exec $NAME service couchdb restart
 fi
 
@@ -23,9 +26,6 @@ wait_for_couchdb() {
   done
 }
 wait_for_couchdb
-
-# CouchDB container name
-export NAME=`docker ps --format "{{.Names}}" --last 1`
 
 # Set up system databases
 echo "Setting up CouchDB system databases..."
