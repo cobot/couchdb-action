@@ -12,7 +12,6 @@ then
   echo "Enabling Erlang query server..."
   docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
   docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/15-erlang-query-server.ini'
-  # docker exec $NAME service couchdb restart
 fi
 
 wait_for_couchdb() {
