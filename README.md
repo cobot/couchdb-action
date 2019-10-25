@@ -14,6 +14,7 @@ steps:
     uses: "cobot/couchdb-action@master"
     with:
       couchdb version: '2.3.1'
+      erlang query server: true|false
   - name: Do something
     run: |
       curl http://${{steps.couchdb.outputs.ip}}:5984/
