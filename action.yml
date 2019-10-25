@@ -15,9 +15,6 @@ inputs:
     description: 'Enable Erlang query server.'
     required: false
     default: true
-outputs:
-  ip:
-    description: IP address of CouchDB
 runs:
   using: 'docker'
   image: 'Dockerfile'

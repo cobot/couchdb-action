@@ -12,16 +12,15 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set up CouchDB
-      id: couchdb
       uses: cobot/couchdb-action@master
       with:
         couchdb version: '2.3.1'
         erlang query server: true
     - name: Test that CouchDB can be accessed
-      run: curl -sS -f http://${{steps.couchdb.outputs.ip}}:5984/
+      run: curl -sS -f http://127.0.0.1:5984/
     - name: Test that system databases are there
-      run: curl -sS -f http://${{steps.couchdb.outputs.ip}}:5984/_users
+      run: curl -sS -f http://127.0.0.1:5984/_users
     - name: Test that the Erlang query server is enabled
       run: |
-        curl -sS -f 'http://${{steps.couchdb.outputs.ip}}:5984/_users/_design/test' -X PUT -H 'Content-Type: application/json' --data '{"views":{"test":{"map":"fun({Doc}) -> Emit(proplists:get_value(<<\"name\">>, Doc, null), 1) end."}},"language":"erlang"}'
-        curl -sS -f 'http://${{steps.couchdb.outputs.ip}}:5984/_users/_design/test/_view/test'
+        curl -sS -f 'http://127.0.0.1:5984/_users/_design/test' -X PUT -H 'Content-Type: application/json' --data '{"views":{"test":{"map":"fun({Doc}) -> Emit(proplists:get_value(<<\"name\">>, Doc, null), 1) end."}},"language":"erlang"}'
+        curl -sS -f 'http://127.0.0.1:5984/_users/_design/test/_view/test'
