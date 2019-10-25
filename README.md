@@ -10,14 +10,13 @@ Basic:
 ```yaml
 steps:
   - name: Set up CouchDB
-    id: couchdb
     uses: "cobot/couchdb-action@master"
     with:
       couchdb version: '2.3.1'
       erlang query server: true|false
   - name: Do something
     run: |
-      curl http://${{steps.couchdb.outputs.ip}}:5984/
+      curl http://127.0.0.1:5984/
 
 ```
 
