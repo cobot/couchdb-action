@@ -3,10 +3,10 @@
 echo "Starting Docker..."
 sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
 
-echo "Waiting for CouchDB..."
-hostip=$(ip route show | awk '/default/ {print $3}')
-
 wait_for_couchdb() {
+  echo "Waiting for CouchDB..."
+  hostip=$(ip route show | awk '/default/ {print $3}')
+
   while ! curl -f http://$hostip:5984/ &> /dev/null
   do
     echo "."
@@ -29,7 +29,7 @@ if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
 then
   echo "Enabling Erlang query server..."
   docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
-  docher exec $NAME sh -c 'cat /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
+  docker exec $NAME sh -c 'cat /opt/couchdb/etc/default.d/15-erlang-query-server.ini'
   docker exec $NAME service couchdb restart
   wait_for_couchdb
 fi
