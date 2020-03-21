@@ -11,6 +11,16 @@ echo "Enabling delayed commits..."
 docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
 docker exec $NAME sh -c 'echo "[couchdb]\ndelayed_commits = true" >> /opt/couchdb/etc/local.d/01-delayed-commits.ini'
 
+echo "Setting performance options"
+docker exec $NAME sh -c 'echo "[httpd]\nsocket_options = [{nodelay, true}]" >> /opt/couchdb/etc/local.d/02-performance.ini'
+
+if [ "$INPUT_RAM_DISK" = 'true' ]
+then
+  echo "Setting up RAM disk"
+  docker exec $NAME sh -c 'mkdir /ram_disk && mount -t tmpfs -o rw,size=64M tmpfs /ram_disk'
+  docker exec $NAME sh -c 'echo "[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk" >> /opt/couchdb/etc/local.d/03-ram-disk.ini'
+fi
+
 # Enable Erlang query server
 if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
 then
