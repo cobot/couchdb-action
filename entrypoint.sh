@@ -6,11 +6,15 @@ sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
 
+# Enable delayed commits for better performance
+echo "Enabling delayed commits..."
+docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
+docker exec $NAME sh -c 'echo "[couchdb]\ndelayed_commits = true" >> /opt/couchdb/etc/local.d/01-delayed-commits.ini'
+
 # Enable Erlang query server
 if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
 then
   echo "Enabling Erlang query server..."
-  docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
   docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/15-erlang-query-server.ini'
 fi
 
