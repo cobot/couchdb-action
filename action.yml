@@ -15,10 +15,6 @@ inputs:
     description: 'Enable Erlang query server.'
     required: false
     default: true
-  ram_disk:
-    description: 'Run CouchDB on a RAM disk for better performance'
-    required: false
-    default: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
