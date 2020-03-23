@@ -1,7 +1,12 @@
 #!/bin/sh
 
+if [ "$INPUT_RAM_DISK" = 'true' ]
+then
+  export RAM_DISK_OPTION="--tmpfs /ram_disk"
+fi
+
 echo "Starting Docker..."
-sh -c "docker run -d -p 5984:5984 -p 5986:5986 couchdb:$INPUT_COUCHDB_VERSION"
+sh -c "docker run -d -p 5984:5984 -p 5986:5986 $RAM_DISK_OPTION couchdb:$INPUT_COUCHDB_VERSION"
 
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
@@ -16,8 +21,7 @@ docker exec $NAME sh -c 'echo "[httpd]\nsocket_options = [{nodelay, true}]" >> /
 
 if [ "$INPUT_RAM_DISK" = 'true' ]
 then
-  echo "Setting up RAM disk"
-  docker exec $NAME sh -c 'mkdir /ram_disk && mount -t tmpfs -o rw,size=64M tmpfs /ram_disk'
+  echo "Configuring CouchDB to use RAM disk"
   docker exec $NAME sh -c 'echo "[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk" >> /opt/couchdb/etc/local.d/03-ram-disk.ini'
 fi
 
