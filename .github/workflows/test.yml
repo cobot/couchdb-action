@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set up CouchDB
-      uses: cobot/couchdb-action@master
+      uses: .
       with:
         couchdb version: '2.3.1'
         erlang query server: true
