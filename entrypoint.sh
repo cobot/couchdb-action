@@ -24,6 +24,9 @@ then
   docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/15-erlang-query-server.ini'
 fi
 
+echo "Restarting CouchDB..."
+docker exec $NAME /etc/init.d/couchdb restart
+
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
   hostip=$(ip route show | awk '/default/ {print $3}')
