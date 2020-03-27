@@ -15,7 +15,6 @@ jobs:
       uses: ./
       with:
         couchdb version: '2.3.1'
-        erlang query server: true
     - name: Test that CouchDB can be accessed
       run: curl -sS -f http://127.0.0.1:5984/
     - name: Test that system databases are there

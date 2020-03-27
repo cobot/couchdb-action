@@ -1,6 +1,7 @@
 # CouchDB GitHub Action
 
 This [GitHub Action](https://github.com/features/actions) sets up a CouchDB database.
+The Erlang query server is enabled.
 
 # Usage
 
@@ -13,7 +14,6 @@ steps:
     uses: "cobot/couchdb-action@master"
     with:
       couchdb version: '2.3.1'
-      erlang query server: true|false
   - name: Do something
     run: |
       curl http://127.0.0.1:5984/
