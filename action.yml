@@ -11,10 +11,6 @@ inputs:
     description: 'Version of CouchDB to use.'
     required: false
     default: 'latest'
-  erlang query server:
-    description: 'Enable Erlang query server.'
-    required: false
-    default: true
 runs:
   using: 'docker'
   image: 'Dockerfile'

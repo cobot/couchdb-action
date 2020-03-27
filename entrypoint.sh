@@ -6,23 +6,7 @@ sh -c "docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk couchdb:$INPUT_
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
 
-# Enable delayed commits for better performance
-echo "Enabling delayed commits..."
-docker exec $NAME mkdir -p /opt/couchdb/etc/local.d
-docker exec $NAME sh -c 'echo "[couchdb]\ndelayed_commits = true" >> /opt/couchdb/etc/local.d/01-delayed-commits.ini'
-
-echo "Setting nodelay option"
-docker exec $NAME sh -c 'echo "[httpd]\nsocket_options = [{nodelay, true}]" >> /opt/couchdb/etc/local.d/02-performance.ini'
-
-echo "Configuring CouchDB to use RAM disk"
-docker exec $NAME sh -c 'echo "[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk" >> /opt/couchdb/etc/local.d/03-ram-disk.ini'
-
-# Enable Erlang query server
-if [ "$INPUT_ERLANG_QUERY_SERVER" = 'true' ]
-then
-  echo "Enabling Erlang query server..."
-  docker exec $NAME sh -c 'echo "[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/15-erlang-query-server.ini'
-fi
+docker exec $NAME sh -c 'mkdir -p /opt/couchdb/etc/local.d && echo "[couchdb]\ndatabase_dir = /ram_disk\nview_index_dir = /ram_disk\ndelayed_commits = true\n[httpd]\nsocket_options = [{nodelay, true}]\n[native_query_servers]\nerlang = {couch_native_process, start_link, []}" >> /opt/couchdb/etc/local.d/01-github-action-custom.ini'
 
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
