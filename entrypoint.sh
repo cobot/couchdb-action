@@ -33,3 +33,6 @@ echo "Setting up CouchDB system databases..."
 docker exec $NAME curl -sS $CURL_CREDENTIALS 'http://127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
 docker exec $NAME curl -sS $CURL_CREDENTIALS 'http://127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
 docker exec $NAME curl -sS $CURL_CREDENTIALS 'http://127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
+
+COUCHDB_URL="http://$INPUT_COUCHDB_USER:$INPUT_COUCHDB_PASSWORD@127.0.0.1:5984/"
+echo "couchdb-url=$(echo $COUCHDB_URL)" >> $GITHUB_OUTPUT
