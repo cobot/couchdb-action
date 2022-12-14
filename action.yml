@@ -11,6 +11,15 @@ inputs:
     description: 'Version of CouchDB to use.'
     required: false
     default: 'latest'
+  couchdb user:
+    description: 'Username name of the admin user.'
+    required: false
+  couchdb password:
+    description: 'Password of the admin user.'
+    required: false
+outputs:
+  couchdb-url:
+    description: 'Base URL to make requests to CouchDB.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
