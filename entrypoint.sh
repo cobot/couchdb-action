@@ -19,6 +19,8 @@ echo "Host IP: $hostip"
 curl -i http://$hostip:5984/
 
 
+docker logs $NAME
+
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
   hostip=$(ip route show | awk '/default/ {print $3}')
