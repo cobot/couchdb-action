@@ -21,7 +21,6 @@ runs:
         sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" Dockerfile.couchdb
         docker build --tag custom-couchdb -f Dockerfile.couchdb .
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
-        sleep 10
       shell: bash
     - name: Wait for CouchDB to be ready
       run: ./wait-for-couchdb.sh
