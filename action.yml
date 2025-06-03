@@ -1,16 +1,34 @@
-name: 'Setup CouchDB'
-description: 'Set up a CouchDB database as a single node.'
-author: 'Alexander Lang'
+name: "Setup CouchDB"
+description: "Set up a CouchDB database as a single node."
+author: "Alexander Lang"
 branding:
-  icon: 'database'
-  color: 'red'
+  icon: "database"
+  color: "red"
 inputs:
   # See https://hub.docker.com/_/couchdb for supported versions
   # and further details on input environment variables
-  couchdb version:
-    description: 'Version of CouchDB to use.'
+  couchdb-version:
+    description: "Version of CouchDB to use."
     required: false
-    default: 'latest'
+    default: "latest"
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "composite"
+  steps:
+    - name: Set up CouchDB
+      env:
+        INPUT_COUCHDB_VERSION: ${{ inputs.couchdb-version }}
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" $GITHUB_ACTION_PATH/Dockerfile.couchdb
+        docker build --tag custom-couchdb -f $GITHUB_ACTION_PATH/Dockerfile.couchdb $GITHUB_ACTION_PATH
+        docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
+      shell: bash
+    - name: Wait for CouchDB to be ready
+      run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
+      shell: bash
+    - name: Set up CouchDB system databases
+      run: |
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
+      shell: bash
