@@ -22,14 +22,14 @@ runs:
         docker build --tag custom-couchdb -f Dockerfile.couchdb .
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
         sleep 10
-        docker logs `docker ps -q --filter ancestor=custom-couchdb`
       shell: bash
-    - name: Wait for CouchDB to be ready
-      run: ./wait-for-couchdb.sh
-      shell: bash
+    # - name: Wait for CouchDB to be ready
+    #   run: ./wait-for-couchdb.sh
+    #   shell: bash
     - name: Set up CouchDB system databases
       run: |
-        export HOSTIP=$(ip route show | awk '/default/ {print $3}')
+        CONTAINER_ID=$(docker ps -q --filter "ancestor=custom-couchdb")
+        HOSTIP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID)
         curl -sS 'http://admin:admin@$HOSTIP:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
         curl -sS 'http://admin:admin@$HOSTIP:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
         curl -sS 'http://admin:admin@$HOSTIP:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
