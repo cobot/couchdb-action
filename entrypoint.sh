@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo "Starting Docker..."
-sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" Dockerfile.couchdb
-docker build --tag couchdb -f Dockerfile.couchdb .
+sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" /work/Dockerfile.couchdb
+docker build --tag couchdb -f /work/Dockerfile.couchdb .
 docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk couchdb
 
 # CouchDB container name
