@@ -19,8 +19,10 @@ runs:
         INPUT_COUCHDB_VERSION: ${{ inputs.couchdb-version }}
       run: |
         sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" Dockerfile.couchdb
-        docker build --tag couchdb -f Dockerfile.couchdb .
-        docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk couchdb
+        docker build --tag custom-couchdb -f Dockerfile.couchdb .
+        docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
+        sleep 10
+        docker logs `docker ps -q --filter ancestor=custom-couchdb`
       shell: bash
     - name: Wait for CouchDB to be ready
       run: ./wait-for-couchdb.sh
