@@ -23,9 +23,9 @@ runs:
         docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
         sleep 10
       shell: bash
-    # - name: Wait for CouchDB to be ready
-    #   run: ./wait-for-couchdb.sh
-    #   shell: bash
+    - name: Wait for CouchDB to be ready
+      run: ./wait-for-couchdb.sh
+      shell: bash
     - name: Set up CouchDB system databases
       run: |
         curl -sS 'http://admin:admin@127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
