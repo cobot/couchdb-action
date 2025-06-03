@@ -28,9 +28,7 @@ runs:
     #   shell: bash
     - name: Set up CouchDB system databases
       run: |
-        CONTAINER_ID=$(docker ps -q --filter "ancestor=custom-couchdb")
-        HOSTIP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID)
-        curl -sS 'http://admin:admin@$HOSTIP:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
-        curl -sS 'http://admin:admin@$HOSTIP:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
-        curl -sS 'http://admin:admin@$HOSTIP:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_users' -X PUT -H 'Content-Type: application/json' --data '{"id":"_users","name":"_users"}' > /dev/null
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_global_changes' -X PUT -H 'Content-Type: application/json' --data '{"id":"_global_changes","name":"_global_changes"}' > /dev/null
+        curl -sS 'http://admin:admin@127.0.0.1:5984/_replicator' -X PUT -H 'Content-Type: application/json' --data '{"id":"_replicator","name":"_replicator"}' > /dev/null
       shell: bash
