@@ -8,6 +8,14 @@ sh -c "docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk couchdb"
 # CouchDB container name
 export NAME=`docker ps --format "{{.Names}}" --last 1`
 
+sleep 10
+
+echo "CouchDB version: $INPUT_COUCHDB_VERSION"
+echo "Dockerfile.couchdb: $(cat Dockerfile.couchdb)"
+echo "Name: $NAME"
+
+curl -i http://$hostip:5984/
+
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
   hostip=$(ip route show | awk '/default/ {print $3}')
