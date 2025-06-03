@@ -7,7 +7,7 @@ branding:
 inputs:
   # See https://hub.docker.com/_/couchdb for supported versions
   # and further details on input environment variables
-  couchdb version:
+  couchdb-version:
     description: "Version of CouchDB to use."
     required: false
     default: "latest"
@@ -16,7 +16,7 @@ runs:
   steps:
     - name: Set up CouchDB
       env:
-        INPUT_COUCHDB_VERSION: ${{ inputs.couchdb version }}
+        INPUT_COUCHDB_VERSION: ${{ inputs.couchdb-version }}
       run: |
         sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" Dockerfile.couchdb
         docker build --tag couchdb -f Dockerfile.couchdb .
