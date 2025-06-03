@@ -13,8 +13,11 @@ sleep 10
 echo "CouchDB version: $INPUT_COUCHDB_VERSION"
 echo "Dockerfile.couchdb: $(cat Dockerfile.couchdb)"
 echo "Name: $NAME"
+hostip=$(ip route show | awk '/default/ {print $3}')
+echo "Host IP: $hostip"
 
 curl -i http://$hostip:5984/
+
 
 wait_for_couchdb() {
   echo "Waiting for CouchDB..."
