@@ -14,7 +14,7 @@ Basic:
 ```yaml
 steps:
   - name: Set up CouchDB
-    uses: "cobot/couchdb-action@master"
+    uses: "cobot/couchdb-action@main"
     with:
       couchdb version: "2.3.1"
   - name: Do something
