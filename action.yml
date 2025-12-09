@@ -21,7 +21,7 @@ runs:
       run: |
         sed -i "s/COUCHDB_VERSION/$INPUT_COUCHDB_VERSION/" $GITHUB_ACTION_PATH/Dockerfile.couchdb
         docker build --tag custom-couchdb -f $GITHUB_ACTION_PATH/Dockerfile.couchdb $GITHUB_ACTION_PATH
-        docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk custom-couchdb
+        docker run -d -p 5984:5984 -p 5986:5986 --tmpfs /ram_disk:uid=5984,gid=5984,mode=770 custom-couchdb
       shell: bash
     - name: Wait for CouchDB to be ready
       run: $GITHUB_ACTION_PATH/wait-for-couchdb.sh
